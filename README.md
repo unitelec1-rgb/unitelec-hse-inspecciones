@@ -1,2 +1,0 @@
-# unitelec-hse-inspecciones
-inspecciones
