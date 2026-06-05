@@ -1933,6 +1933,7 @@ async function enviarInspeccion() {
 
   try {
     const firmaInspURL = await subirACloudinary(firmas.inspector, 'firma_inspector', 'firmas');
+    const firmaJefeURL = await subirACloudinary(firmas.jefe, 'firma_jefe', 'firmas');
 
     const evidURLs = {};
    for (const item of [...itemsVG, ...itemsREL, ...itemsCA, ...itemsCO, ...itemsGI,
@@ -1978,6 +1979,7 @@ async function enviarInspeccion() {
     });
 
     if (firmaInspURL) campos['FIRMA DEL INSPECTOR HSE'] = [{ url: firmaInspURL }];
+    if (firmaJefeURL) campos['FIRMA DEL JEFE DE CUADRILLA'] = [{ url: firmaJefeURL }];
 
     [...itemsVG, ...itemsREL, ...itemsCA, ...itemsCO, ...itemsGI,
      ...itemsAT, ...itemsRE, ...itemsRQ, ...itemsRI, ...itemsEC,
