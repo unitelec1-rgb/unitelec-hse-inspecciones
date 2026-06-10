@@ -3576,7 +3576,7 @@ async function enviarInspeccion() {
 // Actualizar nombre jefe + guardar borrador
 document.addEventListener('input', e => {
   guardarBorrador();
-  if (e.target.id === 'supervisor_operativo') {
+  if (e.target.id === 'supervisor') {
     document.getElementById('nombre-supervisor').textContent = e.target.value.toUpperCase();
   }
 });
