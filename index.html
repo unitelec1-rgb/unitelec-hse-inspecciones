@@ -1550,13 +1550,13 @@ canvas { width: 100%; height: 150px; cursor: crosshair; touch-action: none; disp
         </div>
 
         <div class="form-group">
-          <label>Responsable del Proyecto *</label>
-          <input type="text" id="responsable_proyecto" placeholder="Apellidos y Nombres" required />
+          <label>Jefe de Cuadrilla *</label>
+          <input type="text" id="jefe_cuadrilla" placeholder="Apellidos y Nombres" required />
         </div>
 
         <div class="form-group">
-          <label>DNI / C.E Responsable del Proyecto *</label>
-          <input type="number" id="dni_responsable" placeholder="12345678" required />
+          <label>DNI / C.E Jefe de Cuadrilla *</label>
+          <input type="number" id="dni_jefe" placeholder="12345678" required />
         </div>
 
         <div class="form-group">
@@ -1952,10 +1952,10 @@ canvas { width: 100%; height: 150px; cursor: crosshair; touch-action: none; disp
           <div style="padding:8px;font-size:12px;color:#666;text-align:center" id="nombre-inspector"></div>
         </div>
         <div class="firma-box">
-          <div class="firma-titulo">RESPONSABLE DEL PROYECTO</div>
-          <canvas id="canvas-responsable" ontouchstart="startDraw(event,'responsable')" ontouchmove="draw(event,'responsable')" ontouchend="stopDraw('responsable')" onmousedown="startDraw(event,'responsable')" onmousemove="draw(event,'responsable')" onmouseup="stopDraw('responsable')" onmouseleave="stopDraw('responsable')"></canvas>
-          <div class="firma-actions"><button class="btn-limpiar" onclick="limpiarFirma('responsable')">Limpiar</button></div>
-          <div style="padding:8px;font-size:12px;color:#666;text-align:center" id="nombre-responsable"></div>
+          <div class="firma-titulo">SUPERVISOR OPERATIVO</div>
+          <canvas id="canvas-supervisor" ontouchstart="startDraw(event,'supervisor')" ontouchmove="draw(event,'supervisor')" ontouchend="stopDraw('supervisor')" onmousedown="startDraw(event,'supervisor')" onmousemove="draw(event,'supervisor')" onmouseup="stopDraw('supervisor')" onmouseleave="stopDraw('supervisor')"></canvas>
+          <div class="firma-actions"><button class="btn-limpiar" onclick="limpiarFirma('supervisor')">Limpiar</button></div>
+          <div style="padding:8px;font-size:12px;color:#666;text-align:center" id="nombre-supervisor"></div>
         </div>
       </div>
     </div>
@@ -2580,9 +2580,9 @@ let usuarioActual = '';
 let respuestas = {};
 let observaciones = {};
 let manualExpanded = {};
-let drawing = { inspector: false, responsable: false };
+let drawing = { inspector: false, supervisor: false };
 let lastPos = {};
-let firmas = { inspector: null, responsable: null };
+let firmas = { inspector: null, supervisor: null };
 let evidGenFiles = { 1: null, 2: null, 3: null }; // guarda File objects al cargar imagen
 
 // ─── LOGIN ───
@@ -2837,7 +2837,7 @@ function actualizarContadorEvid() {
 }
 // ─── CANVAS FIRMAS ───
 function initCanvas() {
-  ['inspector','responsable'].forEach(t => {
+  ['inspector','supervisor'].forEach(t => {
     const c = document.getElementById(`canvas-${t}`);
     c.width = c.offsetWidth; c.height = 150;
     const ctx = c.getContext('2d');
@@ -2880,8 +2880,8 @@ function guardarBorrador() {
     num_trabajo: document.getElementById('num_trabajo')?.value,
     descripcion_tarea: document.getElementById('descripcion_tarea')?.value,
     num_contrato: document.getElementById('num_contrato')?.value,
-    responsable_proyecto: document.getElementById('responsable_proyecto')?.value,
-    dni_responsable: document.getElementById('dni_responsable')?.value,
+    jefe_cuadrilla: document.getElementById('jefe_cuadrilla')?.value,
+    dni_jefe: document.getElementById('dni_jefe')?.value,
     supervisor: document.getElementById('supervisor')?.value,
     dni_supervisor: document.getElementById('dni_supervisor')?.value,
     subproceso: document.getElementById('subproceso')?.value,
@@ -2905,8 +2905,8 @@ function cargarBorrador() {
 
   const campos = ['cliente','responsable','estado_ejecucion','area_inspectora',
     'area_inspeccionada','empresa_inspectora','proyecto','distrito','direccion',
-    'tipo_orden','num_trabajo','descripcion_tarea','num_contrato','responsable_proyecto',
-    'dni_responsable','supervisor','dni_supervisor','subproceso','tipo_actividad','instalacion',
+    'tipo_orden','num_trabajo','descripcion_tarea','num_contrato','jefe_cuadrilla',
+    'dni_jefe','supervisor','dni_supervisor','subproceso','tipo_actividad','instalacion',
     'oportunidades_mejora'];
 
   campos.forEach(id => {
@@ -2955,8 +2955,8 @@ function limpiarBorradorConfirmado() {
   // Clear form fields
   const campos = ['cliente','responsable','estado_ejecucion','area_inspectora',
     'area_inspeccionada','empresa_inspectora','proyecto','distrito','direccion',
-    'tipo_orden','num_trabajo','descripcion_tarea','num_contrato','responsable_proyecto',
-    'dni_responsable','supervisor','dni_supervisor','subproceso','tipo_actividad','instalacion',
+    'tipo_orden','num_trabajo','descripcion_tarea','num_contrato','jefe_cuadrilla',
+    'dni_jefe','supervisor','dni_supervisor','subproceso','tipo_actividad','instalacion',
     'oportunidades_mejora'];
   campos.forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
 
@@ -2991,7 +2991,7 @@ function limpiarBorradorConfirmado() {
   if (evidCounter) evidCounter.textContent = '0 de 3 imágenes cargadas';
 
   // Clear firmas
-  ['inspector','responsable'].forEach(t => limpiarFirma(t));
+  ['inspector','supervisor'].forEach(t => limpiarFirma(t));
 
   // Reset character counter
   const oportCounter = document.getElementById('oport-counter');
@@ -3028,8 +3028,8 @@ function mostrarRevision() {
     ['N° Trabajo', document.getElementById('num_trabajo')?.value],
     ['Descripción Tarea', document.getElementById('descripcion_tarea')?.value],
     ['N° Contrato', document.getElementById('num_contrato')?.value],
-    ['Responsable del Proyecto', document.getElementById('responsable_proyecto')?.value],
-    ['DNI Responsable', document.getElementById('dni_responsable')?.value],
+    ['Jefe de Cuadrilla', document.getElementById('jefe_cuadrilla')?.value],
+    ['DNI Jefe', document.getElementById('dni_jefe')?.value],
     ['Supervisor Operativo', document.getElementById('supervisor')?.value],
     ['DNI Supervisor', document.getElementById('dni_supervisor')?.value],
     ['Subproceso', document.getElementById('subproceso')?.value],
@@ -3426,7 +3426,7 @@ function actualizarSummaryIG() {
     { id: 'tipo_orden', label: 'Tipo Orden' },
     { id: 'num_trabajo', label: 'N° Trabajo' },
     { id: 'descripcion_tarea', label: 'Tarea' },
-    { id: 'responsable_proyecto', label: 'Responsable Proyecto' },
+    { id: 'jefe_cuadrilla', label: 'Jefe Cuadrilla' },
     { id: 'subproceso', label: 'Subproceso' },
     { id: 'tipo_actividad', label: 'Actividad' },
     { id: 'instalacion', label: 'Instalación' },
@@ -3473,7 +3473,7 @@ function actualizarActionBar(total) {
 
 // ─── ENVIAR ───
 async function enviarInspeccion() {
-  const reqs = ['cliente','responsable','fecha_apertura','estado_ejecucion','area_inspectora','area_inspeccionada','empresa_inspectora','proyecto','distrito','direccion','tipo_orden','num_trabajo','descripcion_tarea','responsable_proyecto','dni_responsable','subproceso','tipo_actividad','instalacion'];
+  const reqs = ['cliente','responsable','fecha_apertura','estado_ejecucion','area_inspectora','area_inspeccionada','empresa_inspectora','proyecto','distrito','direccion','tipo_orden','num_trabajo','descripcion_tarea','jefe_cuadrilla','dni_jefe','subproceso','tipo_actividad','instalacion'];
   for (const id of reqs) {
     const el = document.getElementById(id);
     if (!el || !el.value) {
@@ -3488,7 +3488,7 @@ async function enviarInspeccion() {
 
   try {
     const firmaInspURL  = await subirACloudinary(firmas.inspector, 'firma_inspector', 'firmas');
-    const firmaRespURL  = await subirACloudinary(firmas.responsable,      'firma_responsable',      'firmas');
+    const firmaRespURL  = await subirACloudinary(firmas.supervisor,      'firma_supervisor',      'firmas');
 
     // Subir evidencias generales (se leen desde evidGenFiles, no del DOM)
     const evidGen1URL = evidGenFiles[1] ? await subirArchivoACloudinary(evidGenFiles[1], 'evid_general_1') : null;
@@ -3510,8 +3510,8 @@ async function enviarInspeccion() {
       'N° de trabajo': document.getElementById('num_trabajo').value,
       'Descripción de la Tarea': document.getElementById('descripcion_tarea').value,
       'Proyecto': document.getElementById('proyecto').value,
-      'Responsable del Proyecto': document.getElementById('responsable_proyecto').value,
-      'DNI/ C.E (Responsable del Proyecto)': Number(document.getElementById('dni_responsable').value) || null,
+      'Jefe de Cuadrilla': document.getElementById('jefe_cuadrilla').value,
+      'DNI/ C.E (Jefe de Cuadrilla)': Number(document.getElementById('dni_jefe').value) || null,
       'Supervisor Operativo': document.getElementById('supervisor').value || null,
       'DNI/CE /Supervisor Operativo': Number(document.getElementById('dni_supervisor').value) || null,
       'Subproceso': document.getElementById('subproceso').value,
@@ -3528,7 +3528,7 @@ async function enviarInspeccion() {
     });
 
     if (firmaInspURL) campos['FIRMA DEL INSPECTOR HSE']   = [{ url: firmaInspURL }];
-    if (firmaRespURL)  campos['FIRMA DEL RESPONSABLE DEL PROYECTO'] = [{ url: firmaRespURL  }];
+    if (firmaSupeURL)  campos['FIRMA DEL SUPERVISOR OPERATIVO'] = [{ url: firmaSupeURL  }];
 
     // Resultados de ítems (solo Cumple / No cumple / N/A)
     [...itemsVG, ...itemsREL, ...itemsCA, ...itemsCO, ...itemsGI,
@@ -3576,8 +3576,8 @@ async function enviarInspeccion() {
 // Actualizar nombre jefe + guardar borrador
 document.addEventListener('input', e => {
   guardarBorrador();
-  if (e.target.id === 'responsable_proyecto') {
-    document.getElementById('nombre-responsable').textContent = e.target.value.toUpperCase();
+  if (e.target.id === 'supervisor_operativo') {
+    document.getElementById('nombre-supervisor').textContent = e.target.value.toUpperCase();
   }
 });
 </script>
