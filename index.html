@@ -3488,7 +3488,7 @@ async function enviarInspeccion() {
 
   try {
     const firmaInspURL  = await subirACloudinary(firmas.inspector, 'firma_inspector', 'firmas');
-    const firmaRespURL  = await subirACloudinary(firmas.supervisor,      'firma_supervisor',      'firmas');
+    const firmaSupeURL  = await subirACloudinary(firmas.supervisor, 'firma_supervisor', 'firmas');
 
     // Subir evidencias generales (se leen desde evidGenFiles, no del DOM)
     const evidGen1URL = evidGenFiles[1] ? await subirArchivoACloudinary(evidGenFiles[1], 'evid_general_1') : null;
